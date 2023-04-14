@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Aggiungi una nuova domanda</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="question">Domanda:</label>
+        <textarea class="form-control" id="question" name="question" rows="3" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="answer">Risposta (Si/No):</label>
+        <select class="form-control" id="answer" name="answer" required>
+          <option value="Si">Si</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Salva</button>
+    </form>
+    {% if qas %}
+      <h2>Domande esistenti</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Domanda</th>
+            <th scope="col">Risposta</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for qa in qas %}
+            <tr>
+              <td>{{ qa.question }}</td>
+              <td>{{ qa.answer }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+{% endblock %}
+
+
+
+

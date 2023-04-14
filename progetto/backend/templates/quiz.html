@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ question }}</h1>
+
+<form id="quiz-form">
+    <input type="radio" id="true-answer" name="user_answer" value="true">
+    <label for="true-answer">SI</label><br>
+    <input type="radio" id="false-answer" name="user_answer" value="false">
+    <label for="false-answer">NO</label><br>
+    <input type="submit" value="Invia">
+</form>
+
+<p id="error-message"></p>
+
+<script>
+    const quizForm = document.querySelector('#quiz-form');
+    const errorMessage = document.querySelector('#error-message');
+
+    quizForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const response = await fetch('/quiz/', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        if (data.is_correct) {
+            window.location.reload();
+        } else {
+            errorMessage.innerText = data.error;
+            quizForm.querySelector('#true-answer').checked = false;
+            quizForm.querySelector('#false-answer').checked = false;
+        }
+    });
+</script>
+{% endblock %}
+
